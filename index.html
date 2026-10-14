@@ -9,10 +9,10 @@
         .container { max-width: 1000px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h2 { color: #d9534f; text-align: center; border-bottom: 2px solid #d9534f; padding-bottom: 10px; margin-top: 0; }
         .section-title { background: #007bff; color: white; padding: 8px 12px; font-weight: bold; border-radius: 4px; margin-top: 20px; font-size: 14px; }
-        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 10px; }
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 10px; }
         .form-group { display: flex; flex-direction: column; }
-        label { font-size: 12px; font-weight: bold; margin-bottom: 4px; color: #555; }
-        input, select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
+        label { font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #555; }
+        input, select { padding: 7px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
@@ -38,10 +38,10 @@
 <div class="container">
     <h2>HK ALU - BÓC TÁCH VẬT TƯ & BÁO GIÁ HỆ 700</h2>
     
-    <!-- Phần nhập thông tin chung -->
+    <!-- 1. Thông tin công trình -->
     <div class="section-title">1. THÔNG TIN CÔNG TRÌNH & KÍCH THƯỚC CỬA</div>
     <div class="grid-inputs">
-        <div class="form-group">
+        <div class="form-group" style="grid-column: span 2;">
             <label>Tên Khách Hàng / Công trình:</label>
             <input type="text" id="tenKH" value="Nhà Anh Câm - Hệ 700">
         </div>
@@ -59,20 +59,40 @@
         </div>
     </div>
 
-    <!-- Đơn giá vật liệu -->
-    <div class="section-title">2. ĐƠN GIÁ VẬT TƯ TIÊU CHUẨN</div>
+    <!-- 2. Đơn giá vật tư tiêu chuẩn -->
+    <div class="section-title">2. ĐƠN GIÁ VẬT TƯ & CHI PHÍ PHÁT SINH</div>
     <div class="grid-inputs">
         <div class="form-group">
-            <label>Đơn giá nhôm (VNĐ/m):</label>
-            <input type="number" id="donGiaNhom" value="60500" oninput="tinhToan()">
+            <label>ĐG Khung bao (VNĐ/m):</label>
+            <input type="text" id="dgKhungBao" value="60,500" oninput="formatInput(this); tinhToan();">
         </div>
         <div class="form-group">
-            <label>Đơn giá đố chia (VNĐ/m):</label>
-            <input type="number" id="donGiaDo" value="101000" oninput="tinhToan()">
+            <label>ĐG Đứng trơn (VNĐ/m):</label>
+            <input type="text" id="dgDungTron" value="58,000" oninput="formatInput(this); tinhToan();">
         </div>
         <div class="form-group">
-            <label>Đơn giá kính (VNĐ/m²):</label>
-            <input type="number" id="donGiaKinh" value="295000" oninput="tinhToan()">
+            <label>ĐG Đứng móc (VNĐ/m):</label>
+            <input type="text" id="dgDungMoc" value="58,000" oninput="formatInput(this); tinhToan();">
+        </div>
+        <div class="form-group">
+            <label>ĐG Đố chia cánh (VNĐ/m):</label>
+            <input type="text" id="dgDoChia" value="101,000" oninput="formatInput(this); tinhToan();">
+        </div>
+        <div class="form-group">
+            <label>ĐG Lamri (VNĐ/m):</label>
+            <input type="text" id="dgLamri" value="58,000" oninput="formatInput(this); tinhToan();">
+        </div>
+        <div class="form-group">
+            <label>ĐG Kính (VNĐ/m²):</label>
+            <input type="text" id="dgKinh" value="295,000" oninput="formatInput(this); tinhToan();">
+        </div>
+        <div class="form-group">
+            <label>Cước vận chuyển (VNĐ):</label>
+            <input type="text" id="cuocVC" value="0" oninput="formatInput(this); tinhToan();">
+        </div>
+        <div class="form-group">
+            <label>Giá nhân công (VNĐ):</label>
+            <input type="text" id="giaNC" value="0" oninput="formatInput(this); tinhToan();">
         </div>
         <div class="form-group">
             <label>Tỷ lệ hao hụt cắt (DC):</label>
@@ -80,7 +100,7 @@
         </div>
     </div>
 
-    <!-- Bảng 1: Nhôm -->
+    <!-- 3. Bảng cắt nhôm -->
     <div class="section-title">3. BẢNG KÊ CẮT NHÔM</div>
     <table>
         <thead>
@@ -93,12 +113,10 @@
                 <th>Thành tiền (VNĐ)</th>
             </tr>
         </thead>
-        <tbody id="bangNhom">
-            <!-- Dữ liệu tự động điền -->
-        </tbody>
+        <tbody id="bangNhom"></tbody>
     </table>
 
-    <!-- Bảng 2: Kính -->
+    <!-- 4. Bảng kính -->
     <div class="section-title">4. BẢNG KÊ KÍNH & LAMRI</div>
     <table>
         <thead>
@@ -111,12 +129,10 @@
                 <th>Thành tiền (VNĐ)</th>
             </tr>
         </thead>
-        <tbody id="bangKinh">
-            <!-- Dữ liệu tự động điền -->
-        </tbody>
+        <tbody id="bangKinh"></tbody>
     </table>
 
-    <!-- Bảng 3: Phụ kiện -->
+    <!-- 5. Phụ kiện & Vật tư phụ -->
     <div class="section-title">5. PHỤ KIỆN & VẬT TƯ PHỤ (Gioăng, Keo)</div>
     <table>
         <thead>
@@ -128,9 +144,7 @@
                 <th>Thành tiền (VNĐ)</th>
             </tr>
         </thead>
-        <tbody id="bangPhuKien">
-            <!-- Dữ liệu tự động điền -->
-        </tbody>
+        <tbody id="bangPhuKien"></tbody>
     </table>
 
     <!-- Tổng kết chi phí -->
@@ -140,12 +154,12 @@
 
     <div class="btn-group">
         <button onclick="luuCongTrinh()">LƯU VÀO DANH SÁCH</button>
-        <button class="btn-sync" onclick="alert('Đã sẵn sàng cấu hình đồng bộ Google Sheets theo yêu cầu của anh!')">ĐỒNG BỘ CLOUD</button>
+        <button class="btn-sync" onclick="alert('Đã sẵn sàng đồng bộ Google Sheets!')">ĐỒNG BỘ CLOUD</button>
     </div>
 
-    <!-- Lịch sử lưu -->
+    <!-- Lịch sử -->
     <div class="history-section">
-        <div class="section-title">6. DANH SÁCH CÁC CÔNG TRÌNH ĐÃ LƯU TRÊN MÁY</div>
+        <div class="section-title">6. DANH SÁCH CÁC CÔNG TRÌNH ĐÃ LƯU</div>
         <table>
             <thead>
                 <tr>
@@ -164,96 +178,113 @@
 </div>
 
 <script>
+function parseNum(id) {
+    let val = document.getElementById(id).value.replace(/,/g, '');
+    return parseFloat(val) || 0;
+}
+
+function formatInput(input) {
+    let value = input.value.replace(/,/g, '').replace(/\D/g, '');
+    if (value === "") { input.value = ""; return; }
+    input.value = Number(value).toLocaleString('en-US');
+}
+
 function tinhToan() {
     let w = parseFloat(document.getElementById('w').value) || 0;
     let h = parseFloat(document.getElementById('h').value) || 0;
-    let hoChan = parseFloat(document.getElementById('hoChan').value) || 7;
-    let donGiaNhom = parseFloat(document.getElementById('donGiaNhom').value) || 60500;
-    let donGiaDo = parseFloat(document.getElementById('donGiaDo').value) || 101000;
-    let donGiaKinh = parseFloat(document.getElementById('donGiaKinh').value) || 295000;
     let tyleDC = parseFloat(document.getElementById('tyleDC').value) || 10;
 
-    // Quy chuẩn H1 theo chiều cao
+    let dgKB = parseNum('dgKhungBao');
+    let dgDT = parseNum('dgDungTron');
+    let dgDM = parseNum('dgDungMoc');
+    let dgDo = parseNum('dgDoChia');
+    let dgLamri = parseNum('dgLamri');
+    let dgKinh = parseNum('dgKinh');
+    let cuocVC = parseNum('cuocVC');
+    let giaNC = parseNum('giaNC');
+
     let h1 = (h < 2100) ? 820 : 850;
 
-    // Kích thước cắt nhôm chuẩn hệ 700
     let kbNgang = w - 60;
     let kbDung = h;
     let canhNgang = w - 67;
-    let canhDung = h - 39; // Hoặc tinh chỉnh theo thực tế
+    let canhDung = h - 39;
     let doChia = w - 137;
     
-    let metNhomKB_Ngang = kbNgang / 1000;
-    let metNhomKB_Dung = (kbDung * 2) / 1000;
-    let metNhomCanhNgang = (canhNgang * 2) / 1000;
-    let metNhomCanhDung = canhDung / 1000;
-    let metNhomCanhMoc = canhDung / 1000;
-    let metNhomDoChia = doChia / 1000;
+    let metKB_Ngang = kbNgang / 1000;
+    let metKB_Dung = (kbDung * 2) / 1000;
+    let metCanhNgang = (canhNgang * 2) / 1000;
+    let metCanhDung = canhDung / 1000;
+    let metCanhMoc = canhDung / 1000;
+    let metDoChia = doChia / 1000;
     
-    // Lamri lá nhôm bên dưới
     let slLamri = 8;
     let ktLamri = w - 85;
     let metLamri = (slLamri * ktLamri) / 1000;
 
-    let thanhTienNhom = (metNhomKB_Ngang * donGiaNhom) + 
-                        (metNhomKB_Dung * donGiaNhom) + 
-                        (metNhomCanhNgang * (donGiaNhom - 2500)) + 
-                        (metNhomCanhDung * (donGiaNhom - 2500)) + 
-                        (metNhomCanhMoc * (donGiaNhom - 2500)) + 
-                        (metNhomDoChia * donGiaDo) + 
-                        (metLamri * (donGiaNhom - 2500));
+    let thanhTienNhom = (metKB_Ngang * dgKB) + 
+                        (metKB_Dung * dgKB) + 
+                        (metCanhNgang * dgDT) + 
+                        (metCanhDung * dgDT) + 
+                        (metCanhMoc * dgDM) + 
+                        (metDoChia * dgDo) + 
+                        (metLamri * dgLamri);
 
     let tongTienNhomSauDC = thanhTienNhom * (1 + tyleDC / 100);
 
-    // Kích thước kính phía trên
     let rongKinh = w - 144;
     let caoKinh = h - h1 - 18;
     let dienTichKinh = (rongKinh * caoKinh) / 1000000;
-    let thanhTienKinh = dienTichKinh * donGiaKinh;
+    let thanhTienKinh = dienTichKinh * dgKinh;
 
-    // Phụ kiện & Vật tư phụ (Gioăng, Keo theo hệ số 1.2)
     let chuViCanh = ((canhNgang + canhDung) * 2) / 1000;
     let chuViKhungBao2Mat = ((kbNgang + kbDung * 2) * 2) / 1000;
 
-    let soMetGioăng = chuViCanh * 1.2;
+    let soMetGioang = chuViCanh * 1.2;
     let soMetKeoKinh = chuViCanh * 1.2;
     let soMetKeoTuong = chuViKhungBao2Mat * 1.2;
 
-    let tienGioang = soMetGioăng * 2500;
+    let tienGioang = soMetGioang * 2500;
     let tienKeoKinh = soMetKeoKinh * 2000;
     let tienKeoTuong = soMetKeoTuong * 2000;
     let tienPhuKienKhac = 33000 + 160000; // Bản lề + Khóa
 
-    let tongTienVatTuPhu = tienGioang + tienKeoKinh + tienKeoTuong + tienPhuKienKhac;
+    let tongTienVTP = tienGioang + tienKeoKinh + tienKeoTuong + tienPhuKienKhac;
 
-    let tongGiaVon = tongTienNhomSauDC + thanhTienKinh + tongTienVatTuPhu;
+    // Tổng giá vốn (Nhôm + Kính + VTP + Vận chuyển + Nhân công)
+    let tongGiaVon = tongTienNhomSauDC + thanhTienKinh + tongTienVTP + cuocVC + giaNC;
 
-    // Đổ dữ liệu ra bảng Nhôm
+    // Bảng Nhôm
     document.getElementById('bangNhom').innerHTML = `
-        <tr><td class="text-left">Khung bao ngang</td><td>1</td><td>${kbNgang}</td><td>${metNhomKB_Ngang.toFixed(3)}</td><td>${donGiaNhom.toLocaleString()}</td><td>${Math.round(metNhomKB_Ngang * donGiaNhom).toLocaleString()}</td></tr>
-        <tr><td class="text-left">Khung bao đứng</td><td>2</td><td>${kbDung}</td><td>${metNhomKB_Dung.toFixed(3)}</td><td>${donGiaNhom.toLocaleString()}</td><td>${Math.round(metNhomKB_Dung * donGiaNhom).toLocaleString()}</td></tr>
-        <tr><td class="text-left">Đứng trơn ngang</td><td>2</td><td>${canhNgang}</td><td>${metNhomCanhNgang.toFixed(3)}</td><td>58,000</td><td>${Math.round(metNhomCanhNgang * 58000).toLocaleString()}</td></tr>
-        <tr><td class="text-left">Đứng trơn đứng</td><td>1</td><td>${canhDung}</td><td>${metNhomCanhDung.toFixed(3)}</td><td>58,000</td><td>${Math.round(metNhomCanhDung * 58000).toLocaleString()}</td></tr>
-        <tr><td class="text-left">Đứng móc đứng</td><td>1</td><td>${canhDung}</td><td>${metNhomCanhMoc.toFixed(3)}</td><td>58,000</td><td>${Math.round(metNhomCanhMoc * 58000).toLocaleString()}</td></tr>
-        <tr><td class="text-left">Đố chia cánh</td><td>1</td><td>${doChia}</td><td>${metNhomDoChia.toFixed(3)}</td><td>${donGiaDo.toLocaleString()}</td><td>${Math.round(metNhomDoChia * donGiaDo).toLocaleString()}</td></tr>
-        <tr><td class="text-left">Lamri cần dùng</td><td>${slLamri}</td><td>${ktLamri}</td><td>${metLamri.toFixed(3)}</td><td>58,000</td><td>${Math.round(metLamri * 58000).toLocaleString()}</td></tr>
+        <tr><td class="text-left">Khung bao ngang</td><td>1</td><td>${kbNgang}</td><td>${metKB_Ngang.toFixed(3)}</td><td>${dgKB.toLocaleString()}</td><td>${Math.round(metKB_Ngang * dgKB).toLocaleString()}</td></tr>
+        <tr><td class="text-left">Khung bao đứng</td><td>2</td><td>${kbDung}</td><td>${metKB_Dung.toFixed(3)}</td><td>${dgKB.toLocaleString()}</td><td>${Math.round(metKB_Dung * dgKB).toLocaleString()}</td></tr>
+        <tr><td class="text-left">Đứng trơn ngang</td><td>2</td><td>${canhNgang}</td><td>${metCanhNgang.toFixed(3)}</td><td>${dgDT.toLocaleString()}</td><td>${Math.round(metCanhNgang * dgDT).toLocaleString()}</td></tr>
+        <tr><td class="text-left">Đứng trơn đứng</td><td>1</td><td>${canhDung}</td><td>${metCanhDung.toFixed(3)}</td><td>${dgDT.toLocaleString()}</td><td>${Math.round(metCanhDung * dgDT).toLocaleString()}</td></tr>
+        <tr><td class="text-left">Đứng móc đứng</td><td>1</td><td>${canhDung}</td><td>${metCanhMoc.toFixed(3)}</td><td>${dgDM.toLocaleString()}</td><td>${Math.round(metCanhMoc * dgDM).toLocaleString()}</td></tr>
+        <tr><td class="text-left">Đố chia cánh</td><td>1</td><td>${doChia}</td><td>${metDoChia.toFixed(3)}</td><td>${dgDo.toLocaleString()}</td><td>${Math.round(metDoChia * dgDo).toLocaleString()}</td></tr>
+        <tr><td class="text-left">Lamri cần dùng</td><td>${slLamri}</td><td>${ktLamri}</td><td>${metLamri.toFixed(3)}</td><td>${dgLamri.toLocaleString()}</td><td>${Math.round(metLamri * dgLamri).toLocaleString()}</td></tr>
         <tr style="background:#f1f1f1; font-weight:bold;"><td colspan="5" class="text-right">Cộng tiền nhôm trước DC:</td><td>${Math.round(thanhTienNhom).toLocaleString()}</td></tr>
         <tr style="background:#f1f1f1; font-weight:bold;"><td colspan="5" class="text-right">Cộng ${tyleDC}% DC (hao hụt):</td><td>${Math.round(thanhTienNhom * tyleDC / 100).toLocaleString()}</td></tr>
         <tr style="background:#e2e6ea; font-weight:bold;"><td colspan="5" class="text-right">Tổng tiền nhôm:</td><td>${Math.round(tongTienNhomSauDC).toLocaleString()}</td></tr>
     `;
 
-    // Đổ dữ liệu ra bảng Kính
+    // Bảng Kính (Cho phép sửa tên kính trực tiếp)
+    let tenKinhHienTai = document.getElementById('tenKinhInput') ? document.getElementById('tenKinhInput').value : "Cường lực 5li phun cát";
     document.getElementById('bangKinh').innerHTML = `
-        <tr><td class="text-left">Cường lực 5li phun cát</td><td>1</td><td>${rongKinh}</td><td>${caoKinh}</td><td>${donGiaKinh.toLocaleString()}</td><td>${Math.round(thanhTienKinh).toLocaleString()}</td></tr>
+        <tr>
+            <td><input type="text" id="tenKinhInput" value="${tenKinhHienTai}" style="width:95%; text-align:center; border:none; background:transparent; font-weight:bold;"></td>
+            <td>1</td><td>${rongKinh}</td><td>${caoKinh}</td><td>${dgKinh.toLocaleString()}</td><td>${Math.round(thanhTienKinh).toLocaleString()}</td>
+        </tr>
     `;
 
-    // Đổ dữ liệu ra bảng Phụ kiện & VTP
+    // Bảng Phụ Kiện & Vật tư phụ (Có dòng tổng hợp)
     document.getElementById('bangPhuKien').innerHTML = `
         <tr><td class="text-left">Bản lề hệ 700</td><td>3</td><td>Cái</td><td>11,000</td><td>33,000</td></tr>
         <tr><td class="text-left">Khóa hệ 700</td><td>1</td><td>Bộ</td><td>160,000</td><td>160,000</td></tr>
-        <tr><td class="text-left">Gioăng kính mặt trong</td><td>${soMetGioăng.toFixed(2)}</td><td>m dài</td><td>2,500</td><td>${Math.round(tienGioang).toLocaleString()}</td></tr>
+        <tr><td class="text-left">Gioăng kính mặt trong</td><td>${soMetGioang.toFixed(2)}</td><td>m dài</td><td>2,500</td><td>${Math.round(tienGioang).toLocaleString()}</td></tr>
         <tr><td class="text-left">Keo kính mặt ngoài</td><td>${soMetKeoKinh.toFixed(2)}</td><td>m dài</td><td>2,000</td><td>${Math.round(tienKeoKinh).toLocaleString()}</td></tr>
         <tr><td class="text-left">Keo tường - 2 mặt</td><td>${soMetKeoTuong.toFixed(2)}</td><td>m dài</td><td>2,000</td><td>${Math.round(tienKeoTuong).toLocaleString()}</td></tr>
+        <tr style="background:#e2e6ea; font-weight:bold;"><td colspan="4" class="text-right">Tổng tiền Phụ kiện & VTP:</td><td>${Math.round(tongTienVTP).toLocaleString()}</td></tr>
     `;
 
     document.getElementById('tongGiaVon').innerText = Math.round(tongGiaVon).toLocaleString();
@@ -309,7 +340,6 @@ function xoaMotMuc(id) {
     hienThiLichSu();
 }
 
-// Chạy tự động lần đầu
 tinhToan();
 hienThiLichSu();
 </script>
